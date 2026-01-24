@@ -1,7 +1,5 @@
 import PromptSync from "prompt-sync";
 const prompt = PromptSync({ sigint: true });
-// import { criar } from './conexao.js'
-// import * as funcao from "./conexao.js";
 import * as banco from "./banco.js";
 
 function limparTela() {
@@ -22,7 +20,7 @@ export function menuSelecao() {
         limparTela();
         console.log("menu ADM selecionado");
         adm()
-        return;
+        break
       case "2":
         limparTela();
         console.log("menu Comprando Ingresso");
@@ -36,12 +34,11 @@ export function menuSelecao() {
             else console.log("Cadastro concluído.");
           }
         );
-        banco.fecharConexao();
-        return;
+        break
+
       case "3":
         limparTela();
         console.log("Saindo...");
-        banco.fecharConexao();
         break;
       default:
         limparTela();
@@ -62,7 +59,7 @@ function adm() {
             case "1":
                 limparTela()
                 filmes()
-                return
+                break
         }
     }while(opcao !== "2")
 
@@ -88,9 +85,8 @@ function filmes() {
           prompt("Genero : "),
           prompt("Data Inicio : "),
           prompt("Data Final : "),
-
-          banco.fecharConexao()
         );
+        break
       case "2":
         console.log("-- Editando filme --");
     }

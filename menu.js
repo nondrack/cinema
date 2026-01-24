@@ -6,24 +6,29 @@ function limparTela() {
   console.clear();
 }
 
-export function menuSelecao() {
+// ============= menu principal ===========
+
+export function menuInicial() {
+  
   let opcao;
+  
   do {
-    console.log(" --- Escolha uma das Opção de Teste ---");
-    console.log(" 1 - ADM --");
-    console.log(" 2 - Comprar ingresso --");
-    console.log(" 3 - Sair --");
-    opcao = prompt("--Digite uma escolha-- ");
+    console.log(" ( === Escolha uma das Opção de Teste === )");
+    console.log(" 1 ( - ADM - )");
+    console.log(" 2 ( - CLIENTE - )");
+    console.log(" 3 ( - SAIR - )");
+    
+    opcao = prompt("== Digite uma escolha == : ");
 
     switch (opcao) {
       case "1":
         limparTela();
-        console.log("menu ADM selecionado");
+        console.log("( === MENU ADM === )");
         adm()
         break
       case "2":
         limparTela();
-        console.log("menu Comprando Ingresso");
+        console.log("( ===");
         banco.inserirCadastro(
           prompt("Digite seu nome: "),
           prompt("Digite seu email: "),
@@ -89,7 +94,8 @@ function filmes() {
         break
       case "2":
         console.log("-- Editando filme --");
+        break
     }
   } while (opcao !== "4");
 }
-menuSelecao()
+menuInicial()

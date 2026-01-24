@@ -43,9 +43,24 @@ export function cadastrarFilme(nome, duracao_minutos, descricao, dt_inicio, dt_f
   conexao.query(sql, [nome, duracao_minutos, descricao,dt_inicio, dt_fim ])
 }
 
+// ======== MENU DE ADM ======= //
 
-export function usuario(nome, sobrenome, dt_nascimento){
-  const sql =
-  "INSERT INTO usuario (nome, sobrenome, dt_nascimento) VALUES (?,?,?)";
-  conexao.query(sql,[nome, sobrenome, dt_nascimento]);
+export function cadastrarSessao(inicio, preco){
+  const sql = 
+  "INSERT INTO sessao (inicio, preco) VALUES(?,?)"
+  conexao.query(sql,[inicio, preco],(err, result) => {
+    if (err) {
+      console.error("Erro ao inserir:", err);
+      return;
+    }
+    console.log("Registro inserido, id:", result.insertId)})
 }
+
+
+export function cadastrarSala(numero, total_assentos){
+  const sql = 
+  "INSERT INTO sala(numero, total_assentos) VALUES(?,?)"
+  conexao.query(sql,[numero, total_assentos])
+}
+cadastrarSala("1", "10")
+// fecharConexao()

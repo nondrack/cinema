@@ -8,42 +8,38 @@ function limparTela() {
 
 // ============= menu principal ===========
 
-export function menuInicial() {
-  
+export async function menuInicial() {
   let opcao;
-  
+
   do {
     console.log(" ( === Escolha uma das Opção de Teste === )");
     console.log(" 1 ( - ADM - )");
-    console.log(" 2 ( - CLIENTE - )");
+    console.log(" 2 ( - Comprar ingresso - )");
     console.log(" 3 ( - SAIR - )");
-    
+
     opcao = prompt("== Digite uma escolha == : ");
 
     switch (opcao) {
       case "1":
         limparTela();
         console.log("( === MENU ADM === )");
-        adm()
-        break
+        adm();
+        break;
       case "2":
         limparTela();
-        console.log("( ===");
-        banco.inserirCadastro(
-          prompt("Digite seu nome: "),
-          prompt("Digite seu email: "),
-          prompt("Digite seu cpf: "),
-          prompt("Digite sua data de nascimento: "),
-          (err, result) => {
-            if (err) console.log("Falha ao inserir cadastro.");
-            else console.log("Cadastro concluído.");
-          }
+        console.log("( === Cadastrando cliente ===");
+        const id_cliente = await banco.inserirCadastroCliente(
+          prompt("Digite seu Nome completo: "),
+          prompt("Digite seu Email: "),
+          prompt("Digite seu CPF: "),
+          prompt("Digite sua Data de nascimento: "),
         );
-        break
+        break;
 
       case "3":
         limparTela();
         console.log("Saindo...");
+        banco.fecharConexao();
         break;
       default:
         limparTela();
@@ -52,22 +48,21 @@ export function menuInicial() {
   } while (opcao !== "3");
 }
 
-function adm() {
-    let opcao
-    do{
-        console.log("--- Selecione uma Opção ---");
-        console.log("-- 1 filmes --");
-        console.log();
-        opcao = prompt("-- Digite uma opção --")
+async function adm() {
+  let opcao;
+  do {
+    console.log("--- Selecione uma Opção ---");
+    console.log("-- 1 filmes --");
+    console.log();
+    opcao = prompt("-- Digite uma opção --");
 
-        switch(opcao){
-            case "1":
-                limparTela()
-                filmes()
-                break
-        }
-    }while(opcao !== "2")
-
+    switch (opcao) {
+      case "1":
+        limparTela();
+        filmes();
+        break;
+    }
+  } while (opcao !== "2");
 }
 function filmes() {
   let opcao;
@@ -91,11 +86,11 @@ function filmes() {
           prompt("Data Inicio : "),
           prompt("Data Final : "),
         );
-        break
+        break;
       case "2":
         console.log("-- Editando filme --");
-        break
+        break;
     }
   } while (opcao !== "4");
 }
-menuInicial()
+menuInicial();

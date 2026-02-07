@@ -1,66 +1,96 @@
-import mysql from "mysql2";
-
-
+import mysql from "mysql2/promise";
+import PromptSync from "prompt-sync";
+const prompt = PromptSync({ sigint: true });
 
 export const conexao = mysql.createPool({
-  host: "tramway.proxy.rlwy.net",
+  host: "localhost",
   user: "root",
-  password: "jcGUxCkFljWzuXGYmvsUacSowhSrgVWr",
-  database: "railway",
-  port: 36545,
-  connectionLimit: 10
+  password: "1234",
+  database: "cinema_simples",
+  connectionLimit: 10,
 });
 
+// ======= FECHAR CONEXAO ========//
 
-export function inserirCadastro(nome, email, cpf, dt_nascimento) {
-  const sql =
-    "INSERT INTO pessoa (nome, email, cpf, dt_nascimento) VALUES (?, ?, ?, ?)";
-  conexao.query(sql, [nome, email, cpf, dt_nascimento], (err, result) => {
-    if (err) {
-      console.error("Erro ao inserir:", err);
-      return;
-    }
-    console.log("Registro inserido, id:", result.insertId);
-  });
+export async function fecharConexao() {
+  try {
+    await conexao.end();
+    console.log("Conexao encerrada.");
+  } catch (err) {
+    console.log("Erro ao fechar conexão: ", err);
+  }
 }
 
+// ===== CLIENTE =======//
 
-export function excluir(){
-  const sql = 
-    "TRUNCATE TABLE pessoa;"
-    conexao.query(sql)
+export async function inserirCadastroCliente(nome, email, cpf, dt_nascimento) {
+  try {
+    const sqlCliente =
+      "INSERT INTO cliente (nome_completo, email, cpf, dt_nascimento) VALUES (?, ?, ?, ?)";
+    const [result] = await conexao.query(sqlCliente, [
+      nome,
+      email,
+      cpf,
+      dt_nascimento,
+    ]);
+    return result.insertId;
+  } catch (err) {
+    console.log("Erro ao cadastrar: ", err);
+  }
 }
 
-
-export function fecharConexao() {
-  conexao.end(err => { if (err) console.error(err); });
+export async function inserirPedido(id_cliente, forma_pagamento, total_pago) {
+  const sqlPedido =
+    "INSERT INTO pedido (id_cliente, forma_pagamento, total_pago) VALUES (?,?,?)";
+  const [result] = await conexao.query(sqlPedido, [
+    id_cliente,
+    forma_pagamento,
+    total_pago,
+  ]);
+  return result.insertId;
 }
 
+export async function cadastrarSala(numero, capacidade_total) {
+  const sqlSala = "INSERT INTO sala (numero, capacidade_total) VALUES (?,?)";
+  const [result] = await conexao.query(sqlSala, [numero, capacidade_total]);
+  return result.insertId;
+}
 
-export function cadastrarFilme(nome, duracao_minutos, descricao, dt_inicio, dt_fim){
-  const sql = 
-  "INSERT INTO filme (nome, duracao_minutos, descricao, dt_inicio, dt_fim) VALUES (?, ?, ?, ?, ?)";
-  conexao.query(sql, [nome, duracao_minutos, descricao,dt_inicio, dt_fim ])
+export async function cadastrarSessao(id_filme, id_sala, data_hora, preco_base) {
+  const sqlSessao =
+    "INSERT INTO sessao (id_filme, id_sala, data_hora, preco_base) VALUES (?,?,?,?)";
+  const [result] = await conexao.query(sqlSessao, [
+    id_filme,
+    id_sala,
+    data_hora,
+    preco_base,
+  ]);
+  return result.insertId;
 }
 
 // ======== MENU DE ADM ======= //
 
-export function cadastrarSessao(inicio, preco){
-  const sql = 
-  "INSERT INTO sessao (inicio, preco) VALUES(?,?)"
-  conexao.query(sql,[inicio, preco],(err, result) => {
-    if (err) {
-      console.error("Erro ao inserir:", err);
-      return;
-    }
-    console.log("Registro inserido, id:", result.insertId)})
+export async function cadastrarFilme(nome, duracao_minutos, descricao) {
+  const sqlFilme =
+    "INSERT INTO filme (nome, duracao_minutos, descricao) VALUES(?,?,?)";
+  const [result] = await conexao.query(sqlFilme, [
+    nome,
+    duracao_minutos,
+    descricao,
+  ]);
+  return result.insertId;
 }
 
-
-export function cadastrarSala(numero, total_assentos){
-  const sql = 
-  "INSERT INTO sala(numero, total_assentos) VALUES(?,?)"
-  conexao.query(sql,[numero, total_assentos])
+export async function cadastrarIngresso(id_pedido, id_sessao, assento, tipo_ingresso, categoria_meia, valor_unitario) {
+  const sqlIngresso =
+    "INSERT INTO ingresso (id_pedido, id_sessao, assento, tipo_ingresso, categoria_meia, valor_unitario) VALUES (?,?,?,?,?,?)";
+  const [result] = await conexao.query(sqlIngresso, [
+    id_pedido,
+    id_sessao,
+    assento,
+    tipo_ingresso,
+    categoria_meia,
+    valor_unitario,
+  ]);
+  return result.insertId;
 }
-cadastrarSala("1", "10")
-// fecharConexao()

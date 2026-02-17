@@ -17,3 +17,4 @@ export async function inserirCadastroCliente(nome, email, cpf, dt_nascimento) {
   }
 }
 
+

@@ -1,6 +1,8 @@
 import PromptSync from "prompt-sync";
 const prompt = PromptSync({ sigint: true });
 import * as banco from "./banco.js";
+import * as cadastrarCliente from "./cliente/cadastrarCliente.js"
+import * as admin from "./adm/cadastrarFilme.js";
 
 function limparTela() {
   console.clear();
@@ -28,7 +30,7 @@ export async function menuInicial() {
       case "2":
         limparTela();
         console.log("( === Cadastrando cliente ===");
-        const id_cliente = await banco.inserirCadastroCliente(
+        const id_cliente = await cadastrarCliente.inserirCadastroCliente(
           prompt("Digite seu Nome completo: "),
           prompt("Digite seu Email: "),
           prompt("Digite seu CPF: "),
@@ -39,7 +41,7 @@ export async function menuInicial() {
       case "3":
         limparTela();
         console.log("Saindo...");
-        banco.fecharConexao();
+        
         break;
       default:
         limparTela();
@@ -64,7 +66,7 @@ async function adm() {
     }
   } while (opcao !== "2");
 }
-function filmes() {
+async function filmes() {
   let opcao;
 
   do {
@@ -79,13 +81,9 @@ function filmes() {
     switch (opcao) {
       case "1":
         console.log("-- Cadastrando filme --");
-        banco.cadastrarFilme(
-          prompt("Nome : "),
-          prompt("Duração em Minutos : "),
-          prompt("Genero : "),
-          prompt("Data Inicio : "),
-          prompt("Data Final : "),
-        );
+       const id_filme = await admin.cadastroFilme()
+       console.log(id_filme);
+       
         break;
       case "2":
         console.log("-- Editando filme --");

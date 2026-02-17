@@ -40,6 +40,7 @@ export async function inserirCadastroCliente(nome, email, cpf, dt_nascimento) {
 }
 
 export async function inserirPedido(id_cliente, forma_pagamento, total_pago) {
+  try {
   const sqlPedido =
     "INSERT INTO pedido (id_cliente, forma_pagamento, total_pago) VALUES (?,?,?)";
   const [result] = await conexao.query(sqlPedido, [
@@ -48,6 +49,10 @@ export async function inserirPedido(id_cliente, forma_pagamento, total_pago) {
     total_pago,
   ]);
   return result.insertId;
+}catch(err){
+  console.log("Errdo ao cadastrar: ", err);
+  
+}
 }
 
 export async function cadastrarSala(numero, capacidade_total) {

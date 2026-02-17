@@ -1,0 +1,1 @@
+import * as banco from "../banco.js";

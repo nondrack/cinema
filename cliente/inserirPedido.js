@@ -15,3 +15,5 @@ export async function inserirPedido(id_cliente, forma_pagamento, total_pago) {
   }
 }
 
+
+

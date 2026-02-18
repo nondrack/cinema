@@ -15,5 +15,9 @@ export async function inserirPedido(id_cliente, forma_pagamento, total_pago) {
   }
 }
 
-
+export async function pedido(){
+  let id_cliente
+  let forma_pagamento
+  let total_pago
+}
 

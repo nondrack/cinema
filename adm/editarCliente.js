@@ -1,33 +1,51 @@
-import * as banco from "../banco.js";
+import * as conectar from "../banco.js";
 import PromptSync from "prompt-sync";
 const prompt = PromptSync({ sigint: true });
 
-export async function inserirCadastroCliente(nome, email, cpf, dt_nascimento) {
+export async function mostrarCliente() {
+  try {
+    const sqlCliente = "SELECT id_cliente, nome_completo FROM cliente";
+    const [result] = await conectar.conexao.query(sqlCliente);
+    console.table(result);
+  } catch (err) {
+    console.error("Erro ao mostrar a tabela", err.message);
+  }
+}
+
+
+
+export async function editarCliente(nome, email, cpf, dataNascimento, id) {
   try {
     const sqlCliente =
-      "INSERT INTO cliente (nome_completo, email, cpf, dt_nascimento) VALUES (?, ?, ?, ?)";
-    const [result] = await banco.conexao.query(sqlCliente, [
+      "UPDATE cliente SET nome_completo = ?, email = ?, cpf = ?, dt_nascimento = ? WHERE id_cliente = ?";
+    await conectar.conexao.query(sqlCliente, [
       nome,
       email,
       cpf,
-      dt_nascimento,
+      dataNascimento,
+      id,
     ]);
-    return result.insertId;
   } catch (err) {
     console.error("Erro ao cadastrar: ", err.message);
     throw err;
   }
 }
 
-export async function cadastrandoCliente() {
+export async function editandoCliente() {
   let primeiroNome;
   let sobrenome;
   let nome;
   let email;
   let cpf;
   let dt_nascimento;
-  let dataFormatada
+  let dataFormatada;
+  let id;
 
+ 
+  do {
+    await  mostrarCliente()
+    id = prompt("Digite o ID do cliente que deseja alterar: ");
+  } while (!id);
   do {
     primeiroNome = prompt("Digite seu Primeiro nome: ");
   } while (primeiroNome.length < 3 || Number(primeiroNome));
@@ -51,11 +69,12 @@ export async function cadastrandoCliente() {
   } while (!Number(cpf) || cpf.length !== 11);
 
   do {
-    dt_nascimento= prompt("Digite sua data de nascimento (DD/MM/YYYY): ");
+    dt_nascimento = prompt("Digite sua data de nascimento (DD/MM/YYYY): ");
     dataFormatada = dt_nascimento.split("/").reverse().join("-");
   } while (!dt_nascimento.includes("/"));
 
-  inserirCadastroCliente(nome, email, cpf, dataFormatada);
+  editarCliente(nome, email, cpf, dataFormatada, id);
 }
-cadastrandoCliente()
+editandoCliente()
+
 

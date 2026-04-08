@@ -1,4 +1,4 @@
-import conexao from "../config/banco";
+import conexao from "../config/banco.js";
 
 async function cadastrarIngresso(
   id_pedido,

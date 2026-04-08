@@ -1,6 +1,6 @@
 import PromptSync from "prompt-sync";
 const prompt = PromptSync ({sigint: true});
-import CadastrarSessao from "../Model/Sessao";
+import CadastrarSessao from "../Model/Sessao.js";
 
 
 export async function sessao() {

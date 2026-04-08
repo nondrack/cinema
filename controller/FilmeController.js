@@ -26,5 +26,6 @@ async function TratarCadastroDeFilme() {
     console.log("Erro ao cadastrar filme:", err.message);
   }
 }
+export default TratarCadastroDeFilme
 
 

@@ -4,12 +4,18 @@ const prompt = PromptSync({ sigint: true });
 
 export async function mostrarCliente() {
   try {
-    const sqlCliente = "SELECT id_cliente, nome_completo FROM cliente";
+    const sqlCliente = "SELECT id, nome_completo FROM cliente";
     const [result] = await conectar.conexao.query(sqlCliente);
     console.table(result);
   } catch (err) {
     console.error("Erro ao mostrar a tabela", err.message);
   }
+}
+function buscarNomePorId(id) {
+    const registro = conectar.conexao.find(item => item.id === id);
+    
+    // Retorna o nome ou uma mensagem de erro
+    return registro ? registro.nome : "Nome não encontrado";
 }
 
 

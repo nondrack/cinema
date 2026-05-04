@@ -20,3 +20,5 @@ async function CadastrarCliente(nome, email, cpf, dt_nascimento) {
 }
 
 export default CadastrarCliente;
+
+
